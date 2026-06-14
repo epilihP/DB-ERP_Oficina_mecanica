@@ -1,103 +1,122 @@
-# 🔧 MechanicOS — ERP/WMS para Oficina Mecânica
+# Oficina Mecânica — Sistema de Modelagem de Banco de Dados
 
-> Sistema de gestão completo para oficinas mecânicas com suporte offline-first, sincronização automática e arquitetura modular escalável.
+> Projeto acadêmico de modelagem de banco de dados relacional para uma oficina mecânica. O foco é demonstrar uma base de dados bem estruturada com um sistema simples de cadastro (CRUD) de clientes e peças e controle de acesso por login.
 
 ---
 
-## 📋 Índice
+## Índice
 
-- [Visão Geral](#visão-geral)
+- [Objetivo do Projeto](#objetivo-do-projeto)
+- [Escopo](#escopo)
 - [Stack Tecnológica](#stack-tecnológica)
-- [Arquitetura](#arquitetura)
-- [Módulos](#módulos)
+- [Modelo de Dados](#modelo-de-dados)
+- [Perfis de Acesso](#perfis-de-acesso)
 - [Pré-requisitos](#pré-requisitos)
 - [Instalação e Execução](#instalação-e-execução)
 - [Variáveis de Ambiente](#variáveis-de-ambiente)
 - [Estrutura de Pastas](#estrutura-de-pastas)
-- [Testes](#testes)
 - [Documentação](#documentação)
-- [Contribuindo](#contribuindo)
 
 ---
 
-## Visão Geral
+## Objetivo do Projeto
 
-O **MechanicOS** é um sistema ERP/WMS desenvolvido para o contexto de oficinas mecânicas que operam em ambientes com conectividade instável. O sistema é capaz de funcionar completamente offline por vários dias e sincronizar os dados automaticamente quando a conexão for restabelecida.
+Este é um trabalho acadêmico cujo objetivo principal é **modelar um banco de dados relacional** para o domínio de uma oficina mecânica. Sobre essa base de dados, é construído um sistema mínimo, porém competente, que demonstra na prática como os dados são acessados e manipulados.
 
-### Características Principais
+O sistema entrega:
 
-- ✅ **Offline-First** — Opera sem internet por até 7 dias consecutivos
-- ✅ **Multiusuário** — Múltiplos terminais simultâneos
-- ✅ **Modular** — Módulos independentes e de baixo acoplamento
-- ✅ **Escalável** — Arquitetura preparada para crescimento horizontal
-- ✅ **Auditável** — Todo evento crítico é rastreado
-- ✅ **Observável** — Logs, métricas e tracing integrados
+- **Login** com dois perfis de acesso: **Gerente** e **Funcionário**
+- **CRUD de Clientes** — cadastrar, listar, editar e remover clientes
+- **CRUD de Peças** — cadastrar, listar, editar e remover peças do estoque
+
+O sistema é deliberadamente simples: não há módulos financeiros, ordens de serviço, sincronização offline ou integrações externas. O valor do trabalho está na **modelagem do banco** e em um CRUD bem feito sobre ela.
+
+---
+
+## Escopo
+
+### Dentro do escopo
+- Modelagem relacional das entidades principais (Usuário, Cliente, Peça)
+- Autenticação por login com dois perfis (Gerente e Funcionário)
+- CRUD completo de Clientes
+- CRUD completo de Peças
+
+### Fora do escopo
+- Ordens de serviço, veículos e agenda
+- Módulo financeiro e emissão fiscal
+- Operação offline e sincronização
+- Relatórios avançados e dashboards
 
 ---
 
 ## Stack Tecnológica
 
-### Backend
-| Tecnologia | Versão | Uso |
-|-----------|--------|-----|
-| Node.js | 20 LTS | Runtime |
-| TypeScript | 5.x | Linguagem |
-| Fastify | 4.x | Framework HTTP |
-| Prisma | 5.x | ORM / PostgreSQL |
-| Zod | 3.x | Validação de schemas |
+| Camada | Tecnologia | Uso |
+|--------|-----------|-----|
+| Runtime | Node.js 20 LTS | Execução do backend |
+| Linguagem | TypeScript 5.x | Tipagem estática |
+| Framework HTTP | Fastify 4.x | API REST |
+| Banco de Dados | PostgreSQL 16 | Banco relacional único |
+| ORM | Prisma 5.x | Acesso e modelagem do banco |
+| Validação | Zod 3.x | Validação de entrada |
+| Infra local | Docker Compose | Subir o PostgreSQL |
 
-### Banco de Dados
-| Tecnologia | Uso |
-|-----------|-----|
-| PostgreSQL 16 | Dados relacionais (principal) |
-| MongoDB 7 | Dados de auditoria e logs |
-| Redis 7 | Cache, sessões, filas |
-
-### Infraestrutura
-| Tecnologia | Uso |
-|-----------|-----|
-| Docker | Containerização |
-| Docker Compose | Orquestração local |
-| RabbitMQ | Mensageria assíncrona |
-| GitHub Actions | CI/CD |
-
-### Frontend *(não prioritário)*
-| Tecnologia | Uso |
-|-----------|-----|
-| React 18 | Interface |
-| Redux Toolkit | Estado global |
-| Material UI | Componentes |
+> Banco único (PostgreSQL). O foco do trabalho é a modelagem relacional, então não há necessidade de bancos auxiliares ou mensageria.
 
 ---
 
-## Arquitetura
-
-O sistema segue os princípios de **Clean Architecture** com **Ports and Adapters**, garantindo que as regras de negócio sejam completamente independentes de frameworks e infraestrutura.
+## Modelo de Dados
 
 ```
-┌─────────────────────────────────────────────┐
-│                 Interfaces                  │  ← HTTP, WebSocket, CLI
-├─────────────────────────────────────────────┤
-│               Application                  │  ← Use Cases, DTOs
-├─────────────────────────────────────────────┤
-│                  Domain                     │  ← Entidades, Regras de Negócio
-├─────────────────────────────────────────────┤
-│              Infrastructure                 │  ← DB, Redis, RabbitMQ
-└─────────────────────────────────────────────┘
+┌────────────────────┐
+│      Usuario       │
+├────────────────────┤
+│ id (uuid) PK       │
+│ nome               │
+│ email (único)      │
+│ senhaHash          │
+│ perfil             │  → GERENTE | FUNCIONARIO
+│ createdAt          │
+└────────────────────┘
+
+┌────────────────────┐
+│      Cliente       │
+├────────────────────┤
+│ id (uuid) PK       │
+│ nome               │
+│ tipo               │  → PF | PJ
+│ cpfCnpj (único)    │
+│ telefone           │
+│ email              │
+│ createdAt          │
+│ updatedAt          │
+└────────────────────┘
+
+┌────────────────────┐
+│        Peca        │
+├────────────────────┤
+│ id (uuid) PK       │
+│ codigo (único)     │
+│ descricao          │
+│ unidade            │
+│ precoUnitario      │
+│ estoqueAtual       │
+│ estoqueMinimo      │
+│ createdAt          │
+│ updatedAt          │
+└────────────────────┘
 ```
 
-> Nenhuma regra de negócio depende diretamente de um framework ou banco de dados.
+> As entidades `Cliente` e `Peca` são independentes neste escopo. A modelagem prioriza clareza e boas práticas (chaves UUID, campos únicos, timestamps).
 
 ---
 
-## Módulos
+## Perfis de Acesso
 
-| # | Módulo | Status | Descrição |
-|---|--------|--------|-----------|
-| 1 | **Operacional** | 🔄 Em desenvolvimento | OS, Clientes, Veículos, Agenda |
-| 2 | **Estoque/WMS** | ⏳ Backlog | Peças, Movimentações, Fornecedores |
-| 3 | **Gestão** | ⏳ Backlog | Dashboard, Relatórios, Usuários |
-| 4 | **Financeiro** | ⏳ Backlog | Contas, Fluxo de Caixa, Fiscal |
+| Perfil | Permissões |
+|--------|-----------|
+| **Gerente** | Acesso total: gerencia usuários, clientes e peças |
+| **Funcionário** | Cadastra e consulta clientes e peças |
 
 ---
 
@@ -116,8 +135,8 @@ docker compose >= 2.20.0
 
 ### 1. Clone o repositório
 ```bash
-git clone https://github.com/seu-usuario/mechanicos.git
-cd mechanicos
+git clone https://github.com/seu-usuario/oficina-mecanica.git
+cd oficina-mecanica
 ```
 
 ### 2. Instale as dependências
@@ -131,12 +150,12 @@ cp .env.example .env
 # Edite o arquivo .env com suas configurações
 ```
 
-### 4. Suba a infraestrutura local
+### 4. Suba o banco de dados
 ```bash
 docker compose up -d
 ```
 
-### 5. Execute as migrations
+### 5. Execute as migrations e o seed
 ```bash
 npm run db:migrate
 npm run db:seed
@@ -159,90 +178,41 @@ npm run build && npm run start
 # Aplicação
 NODE_ENV=development
 PORT=3000
-APP_SECRET=sua-chave-secreta-aqui
 
 # PostgreSQL
-DATABASE_URL=postgresql://user:password@localhost:5432/mechanicos
+DATABASE_URL=postgresql://user:password@localhost:5432/oficina
 
-# MongoDB
-MONGODB_URL=mongodb://localhost:27017/mechanicos_logs
-
-# Redis
-REDIS_URL=redis://localhost:6379
-
-# RabbitMQ
-RABBITMQ_URL=amqp://localhost:5672
-
-# JWT
+# JWT (autenticação)
 JWT_SECRET=seu-jwt-secret
 JWT_EXPIRES_IN=8h
-JWT_REFRESH_EXPIRES_IN=7d
 ```
 
 ---
-
+ 
 ## Estrutura de Pastas
 
 ```
 src/
-├── domain/                  # Entidades, interfaces, regras puras de negócio
-│   ├── entities/
-│   ├── repositories/        # Interfaces (contratos)
-│   └── services/            # Domain services
+├── modules/                 # Um módulo por área de negócio
+│   ├── auth/                # login, JWT, hash de senha
+│   ├── clientes/            # CRUD de clientes
+│   └── pecas/               # CRUD de peças
+│       ├── *.routes.ts      # rotas Fastify
+│       ├── *.service.ts     # regras de acesso ao banco
+│       └── *.schema.ts      # validação Zod
 │
-├── application/             # Casos de uso, DTOs, orquestradores
-│   ├── use-cases/
-│   └── dtos/
+├── shared/
+│   ├── errors/              # AppError + handler global
+│   └── plugins/             # autenticação / autorização
 │
-├── infrastructure/          # Implementações concretas
-│   ├── database/
-│   │   ├── prisma/
-│   │   └── mongoose/
-│   ├── cache/               # Redis
-│   ├── messaging/           # RabbitMQ
-│   └── repositories/        # Implementações dos contratos
-│
-├── interfaces/              # Entrada e saída do sistema
-│   ├── http/
-│   │   ├── controllers/
-│   │   ├── routes/
-│   │   ├── middlewares/
-│   │   └── schemas/         # Zod schemas para validação
-│   └── websocket/
-│
-├── shared/                  # Utilitários, erros, helpers globais
-│   ├── errors/
-│   ├── utils/
-│   └── types/
-│
-└── tests/
-    ├── unit/
-    ├── integration/
-    └── e2e/
+├── lib/                     # cliente Prisma e variáveis de ambiente
+├── app.ts                   # monta o Fastify e registra os módulos
+└── server.ts                # inicia o servidor
+
+prisma/
+├── schema.prisma            # Modelagem do banco de dados
+└── seed.ts                  # usuário gerente padrão
 ```
-
----
-
-## Testes
-
-```bash
-# Todos os testes
-npm test
-
-# Apenas unitários
-npm run test:unit
-
-# Apenas integração
-npm run test:integration
-
-# Com cobertura
-npm run test:coverage
-
-# E2E
-npm run test:e2e
-```
-
-**Meta de cobertura:** ≥ 80% em todas as camadas
 
 ---
 
@@ -250,31 +220,12 @@ npm run test:e2e
 
 | Documento | Localização |
 |-----------|-------------|
-| SRS | `docs/project/SRS.md` |
-| Arquitetura | `docs/architecture/` |
-| ADRs | `docs/architecture/ADR/` |
+| SRS (Requisitos) | `docs/project/SRS.md` |
+| Casos de Uso | `docs/project/USE_CASES.md` |
 | Roadmap | `docs/project/ROADMAP.md` |
-| Changelog | `docs/skills/CHANGELOG.md` |
-| API (Swagger) | `http://localhost:3000/docs` (quando rodando) |
+| Product Backlog | `docs/project/PRODUCT_BACKLOG.md` |
+| Decisões de Arquitetura | `docs/architecture/` |
 
 ---
 
-## Contribuindo
-
-Este projeto segue um fluxo de desenvolvimento estruturado:
-
-1. Nenhuma funcionalidade sem requisito documentado no SRS
-2. Nenhum código sem testes
-3. Toda mudança arquitetural registrada em ADR
-4. Commits seguem o padrão **Conventional Commits**
-
-```
-feat(os): adiciona transição de estado para OS
-fix(estoque): corrige cálculo de saldo em movimentação de ajuste
-docs(srs): atualiza requisitos do módulo financeiro
-test(os): adiciona testes de integração para criação de OS
-```
-
----
-
-*Documentação mantida pela equipe de engenharia. Última atualização: 2026-05-30*
+*Projeto acadêmico de modelagem de banco de dados. Última atualização: 2026-06-14*
