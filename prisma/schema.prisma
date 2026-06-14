@@ -1,0 +1,60 @@
+// Modelagem do banco de dados — Oficina Mecânica
+// Banco: PostgreSQL (ver ADR-003)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum PerfilUsuario {
+  GERENTE
+  FUNCIONARIO
+}
+
+enum TipoCliente {
+  PF
+  PJ
+}
+
+model Usuario {
+  id        String        @id @default(uuid())
+  nome      String
+  email     String        @unique
+  senhaHash String
+  perfil    PerfilUsuario @default(FUNCIONARIO)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@map("usuarios")
+}
+
+model Cliente {
+  id        String      @id @default(uuid())
+  nome      String
+  tipo      TipoCliente
+  cpfCnpj   String      @unique @map("cpf_cnpj")
+  telefone  String
+  email     String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  @@map("clientes")
+}
+
+model Peca {
+  id            String   @id @default(uuid())
+  codigo        String   @unique
+  descricao     String
+  unidade       String
+  precoUnitario Decimal  @map("preco_unitario") @db.Decimal(10, 2)
+  estoqueAtual  Int      @default(0) @map("estoque_atual")
+  estoqueMinimo Int      @default(0) @map("estoque_minimo")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("pecas")
+}
