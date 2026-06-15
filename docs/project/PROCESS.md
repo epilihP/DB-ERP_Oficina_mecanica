@@ -72,8 +72,8 @@ Nenhuma funcionalidade é implementada sem passar por todas as etapas abaixo, ne
 ```
 main              ← Produção — sempre estável
   └─ develop      ← Integração contínua
-       └─ feat/os-state-machine    ← Feature branch
-       └─ fix/estoque-saldo-negativo
+       └─ feat/clientes-crud         ← Feature branch
+       └─ fix/peca-codigo-duplicado
        └─ chore/update-dependencies
        └─ docs/adr-004
 ```
@@ -91,9 +91,9 @@ refactor/<escopo>-<descricao-curta>
 
 Exemplos:
 ```
-feat/os-criar-ordem-servico
-feat/auth-jwt-refresh-token
-fix/estoque-calculo-saldo
+feat/clientes-crud
+feat/auth-jwt-login
+fix/peca-codigo-duplicado
 docs/adr-004-estrategia-cache
 ```
 
@@ -152,15 +152,15 @@ Referências a ADRs, use cases, ou decisões técnicas relevantes.
 ### Checklist de Code Review
 
 **Arquitetura:**
-- [ ] Respeitou a separação de camadas (domain não importa infra)?
-- [ ] Usou interfaces/contratos onde necessário?
-- [ ] Dependency Injection aplicado corretamente?
+- [ ] Respeitou a separação modular (`modules/`, `shared/`, `lib/`)?
+- [ ] Regras de acesso ao banco isoladas no `*.service.ts`?
+- [ ] Validação Zod no `*.schema.ts`?
 
 **Código:**
-- [ ] Nomenclatura segue code_style.md?
+- [ ] Nomenclatura consistente com o restante do projeto?
 - [ ] Erros customizados (AppError) em vez de Error genérico?
 - [ ] Logs estruturados sem dados sensíveis?
-- [ ] Sem lógica de negócio no controller?
+- [ ] Sem lógica de negócio na rota (controller)?
 
 **Testes:**
 - [ ] Unitários para lógica de domínio?
