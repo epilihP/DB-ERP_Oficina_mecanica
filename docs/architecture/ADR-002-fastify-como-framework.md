@@ -1,6 +1,7 @@
 # ADR-002 — Fastify como Framework HTTP Principal
 
-
+**Status:** Aceito  
+**Data:** 2026-06-14
 
 ---
 
@@ -30,21 +31,22 @@ Para uma oficina mecânica o volume não é crítico, mas o padrão de qualidade
 
 ```typescript
 // Fastify — validação integrada via JSON Schema
-fastify.post('/os', {
+fastify.post('/clientes', {
   schema: {
     body: {
       type: 'object',
-      required: ['clienteId', 'veiculoId'],
+      required: ['nome', 'tipo', 'cpfCnpj'],
       properties: {
-        clienteId: { type: 'string', format: 'uuid' },
-        veiculoId: { type: 'string', format: 'uuid' }
+        nome: { type: 'string' },
+        tipo: { type: 'string', enum: ['PF', 'PJ'] },
+        cpfCnpj: { type: 'string' }
       }
     }
   }
 }, handler)
 
 // Express — precisa de biblioteca externa (Joi, express-validator)
-router.post('/os', validate(schema), handler)
+router.post('/clientes', validate(schema), handler)
 ```
 
 ### TypeScript de Primeira Classe
@@ -54,10 +56,10 @@ O Fastify tem suporte nativo a TypeScript, com tipos genéricos para request/rep
 ```typescript
 fastify.get<{
   Params: { id: string };
-  Reply: OrdemServicoDto;
-}>('/os/:id', async (request, reply) => {
+  Reply: ClienteDto;
+}>('/clientes/:id', async (request, reply) => {
   // request.params.id é string tipado
-  // reply deve ser OrdemServicoDto
+  // reply deve ser ClienteDto
 })
 ```
 
@@ -67,8 +69,8 @@ O Fastify usa encapsulamento de contexto via plugins, o que se alinha com nossa 
 
 ```typescript
 // Cada módulo é um plugin isolado
-fastify.register(operacionalPlugin, { prefix: '/api/v1/operacional' })
-fastify.register(estoquePlugin,     { prefix: '/api/v1/estoque' })
+fastify.register(clientesRoutes, { prefix: '/clientes' })
+fastify.register(pecasRoutes,    { prefix: '/pecas' })
 ```
 
 ---

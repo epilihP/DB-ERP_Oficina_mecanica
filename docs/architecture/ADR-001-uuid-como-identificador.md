@@ -1,18 +1,15 @@
-# ADR-001 — Uso de UUID v4 como Identificador Universal
+# ADR-001 — Uso de UUID v4 como Identificador
 
-
+**Status:** Aceito  
+**Data:** 2026-06-14
 
 ---
 
 ## Contexto
 
-O sistema precisa operar offline por vários dias. Durante esse período, múltiplos terminais criam registros localmente sem comunicação com o servidor central. Quando a sincronização ocorre, esses registros precisam ser inseridos no banco principal sem colisões de identificador.
+O sistema precisa de uma chave primária para cada entidade do banco (`Usuario`, `Cliente`, `Peca`). Há duas abordagens comuns: chaves inteiras auto-incrementais (SERIAL) e identificadores únicos universais (UUID).
 
-O uso de **chaves primárias auto-incrementais** (INTEGER com SERIAL/AUTOINCREMENT) é incompatível com esse cenário porque:
-
-- Terminal A cria OS com ID `1001` offline
-- Terminal B cria OS com ID `1001` offline simultaneamente
-- Na sincronização, há colisão — qual OS é `1001`?
+Como o foco do trabalho é a **modelagem do banco com boas práticas**, queremos uma escolha de chave que seja segura, previsível para a aplicação e fácil de manter.
 
 ---
 
@@ -21,17 +18,14 @@ O uso de **chaves primárias auto-incrementais** (INTEGER com SERIAL/AUTOINCREME
 **Todas as entidades do sistema utilizarão UUID v4 como chave primária.**
 
 ```typescript
-// Correto — gerado localmente, globalmente único
+// Gerado pela aplicação, globalmente único
 const id = crypto.randomUUID(); // "a3b4c5d6-e7f8-4a1b-9c2d-0e3f4a5b6c7d"
-
-// Errado para offline-first
-const id = await db.sequence.nextval(); // Requer comunicação com banco
 ```
 
 ### Implementação no Prisma
 
 ```prisma
-model OrdemServico {
+model Cliente {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -41,21 +35,29 @@ model OrdemServico {
 
 ---
 
+## Justificativa
+
+- **Boas práticas de modelagem:** UUID é amplamente adotado e padroniza a chave entre todas as entidades.
+- **Não expõe volume de dados:** IDs sequenciais em URLs (`/clientes/42`) revelam quantos registros existem e permitem enumeração; UUIDs evitam isso.
+- **Geração na aplicação:** o ID pode ser gerado antes de persistir, simplificando testes e a montagem de respostas.
+
+---
+
 ## Consequências
 
 **Positivas:**
-- Elimina colisões de ID durante operação offline
-- Permite geração de ID no cliente antes de persistir
-- Simplifica a sincronização bidirecional
+- Padronização da chave primária em todo o modelo
+- URLs não enumeráveis (mais difícil "adivinhar" registros)
+- ID disponível na aplicação antes da escrita no banco
 
 **Negativas:**
 - UUIDs ocupam mais espaço que integers (16 bytes vs 4 bytes)
 - Índices B-tree em UUIDs aleatórios têm inserção ligeiramente mais lenta
-- URLs ficam menos amigáveis (`/os/a3b4c5d6-...` vs `/os/42`)
+- URLs ficam menos amigáveis (`/clientes/a3b4c5d6-...` vs `/clientes/42`)
 
 **Mitigação das negativas:**
-- O volume de dados de uma oficina mecânica não justifica preocupação com espaço
-- Para URLs públicas/relatórios, pode-se usar um código legível separado (ex: `OS-2026-0042`)
+- O volume de dados de uma oficina mecânica não justifica preocupação com espaço ou performance de índice
+- Para relatórios/exibição pode-se usar um código legível separado (ex: o campo `codigo` da peça)
 
 ---
 
@@ -63,6 +65,6 @@ model OrdemServico {
 
 | Alternativa | Motivo da rejeição |
 |-------------|-------------------|
-| INTEGER auto-increment | Incompatível com offline-first |
-| ULID (ordenável) | Complexidade adicional sem benefício claro no contexto |
-| Nanoid curto | Probabilidade de colisão em múltiplos terminais |
+| INTEGER auto-increment | Expõe volume e permite enumeração de registros |
+| ULID (ordenável) | Complexidade adicional sem benefício claro neste contexto |
+| Nanoid curto | Sem padronização com o ecossistema; menos comum em modelagem relacional |

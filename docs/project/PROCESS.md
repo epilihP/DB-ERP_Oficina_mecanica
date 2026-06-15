@@ -1,7 +1,7 @@
 # process.md — Processos de Desenvolvimento
 
 **Versão:** 1.0.0  
-**Última atualização:** 2026-05-30
+**Última atualização:** 2026-06-14
 
 ---
 
@@ -187,6 +187,7 @@ PATCH — correção de bug retrocompatível
 ```
 
 Exemplos:
-- `0.1.0` → Módulo Operacional MVP
-- `0.2.0` → Módulo Estoque MVP
-- `1.0.0` → Sistema completo em produção
+- `0.1.0` → Autenticação e perfis
+- `0.2.0` → CRUD de Clientes
+- `0.3.0` → CRUD de Peças
+- `1.0.0` → Sistema completo (CRUD + login) estável
