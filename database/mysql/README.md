@@ -1,6 +1,6 @@
 # MySQL — Modelo Físico
 
-Scripts SQL standalone para o modelo físico do ERP Oficina Mecânica, derivados do [modelo conceitual](../docs/database/MODELO-CONCEITUAL.md).
+Scripts derivados do [modelo lógico](../docs/database/MODELO-LOGICO.md) e [modelo conceitual](../docs/database/MODELO-CONCEITUAL.md).
 
 **Requisito:** MySQL 8.0+ (uso de `DEFAULT (UUID())`).
 

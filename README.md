@@ -221,6 +221,19 @@ prisma/
 
 ## Documentação
 
+### Modelagem de banco de dados (entrega da disciplina)
+
+| Documento | Localização |
+|-----------|-------------|
+| **Índice de entrega** | [`docs/database/ENTREGA.md`](docs/database/ENTREGA.md) |
+| Modelo conceitual | [`docs/database/MODELO-CONCEITUAL.md`](docs/database/MODELO-CONCEITUAL.md) |
+| Modelo lógico | [`docs/database/MODELO-LOGICO.md`](docs/database/MODELO-LOGICO.md) |
+| Justificativas | [`docs/database/JUSTIFICATIVAS.md`](docs/database/JUSTIFICATIVAS.md) |
+| Checklist / apresentação | [`docs/database/CHECKLIST-APRESENTACAO.md`](docs/database/CHECKLIST-APRESENTACAO.md) |
+| Scripts MySQL (físico) | [`database/mysql/`](database/mysql/) |
+
+### Projeto integrador
+
 | Documento | Localização |
 |-----------|-------------|
 | SRS (Requisitos) | `docs/project/SRS.md` |

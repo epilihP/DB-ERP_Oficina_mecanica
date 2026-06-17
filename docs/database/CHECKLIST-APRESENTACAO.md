@@ -2,7 +2,7 @@
 
 Respostas para o roteiro de apresentação do projeto de banco de dados — ERP Oficina Mecânica.
 
-**Referências:** [MODELO-CONCEITUAL.md](MODELO-CONCEITUAL.md) · [Scripts MySQL](../database/mysql/)
+**Referências:** [MODELO-CONCEITUAL.md](MODELO-CONCEITUAL.md) · [MODELO-LOGICO.md](MODELO-LOGICO.md) · [Scripts MySQL](../database/mysql/) · [ENTREGA.md](ENTREGA.md)
 
 ---
 
@@ -131,19 +131,19 @@ No modelo físico MySQL: `CHAR(36)` com `DEFAULT (UUID())`.
 
 ## 7. O modelo lógico está correto?
 
-**Sim**, com base nos critérios de modelagem relacional:
+**Sim** — documentado em [MODELO-LOGICO.md](MODELO-LOGICO.md) e implementado em [`schema_extended.sql`](../../database/mysql/schema_extended.sql).
 
 | Critério | Situação |
 |----------|----------|
 | Entidades com PK única | OK — UUID em todas |
 | Atributos únicos (UK) | OK — `email`, `cpf_cnpj`, `codigo`, `placa`, `numero` |
-| Normalização | OK — sem redundância desnecessária |
-| N:N resolvido por associativa | OK — `ItemOrdemPeca`, `ItemOrdemServico` com atributos próprios |
+| Normalização | OK — ver [JUSTIFICATIVAS.md](JUSTIFICATIVAS.md) §3 |
+| N:N resolvido por associativa | OK — `item_ordem_peca`, `item_ordem_servico` |
 | MVP sem FKs forçadas | OK — alinhado ao escopo documentado |
 | Timestamps UTC | OK — `created_at`, `updated_at` |
 | Domínios enumerados | OK — perfil, tipo cliente, status OS |
 
-O modelo conceitual está em [MODELO-CONCEITUAL.md](MODELO-CONCEITUAL.md); o modelo lógico/físico MySQL espelha essa estrutura.
+O modelo conceitual está em [MODELO-CONCEITUAL.md](MODELO-CONCEITUAL.md); o modelo lógico em [MODELO-LOGICO.md](MODELO-LOGICO.md); o físico em [database/mysql/](../../database/mysql/).
 
 ---
 
@@ -171,19 +171,18 @@ mysql -u root -p oficina_mvp < database/mysql/seed_mvp.sql
 
 ## 9. Todos os integrantes conseguem explicar o projeto?
 
-Use esta seção na apresentação — cada integrante cobre um tópico:
+Use esta seção na apresentação — cada integrante cobre um tópico (preencher nomes em [ENTREGA.md](ENTREGA.md)):
 
 | Integrante | Tópico | Pontos-chave |
 |------------|--------|--------------|
-| _(nome)_ | Problema e escopo | Oficina mecânica; MVP vs estendida; sem financeiro/fiscal |
-| _(nome)_ | Entidades MVP | Usuario, Cliente, Peca — atributos e UKs |
-| _(nome)_ | Modelo estendido | Veiculo, OS, serviços, associativas N:N |
-| _(nome)_ | Cardinalidades | 1:N com `(1,N)`—`(1,1)`; N:N via associativa |
-| _(nome)_ | PKs e FKs | UUID; 0 FK no MVP; 8 FK no estendido |
-| _(nome)_ | Modelo físico | Scripts MySQL; como rodar; consultas de demo |
-| _(nome)_ | Demonstração | Estoque crítico; OS com JOINs |
+| Integrante 1 _(nome)_ | Problema e escopo | Oficina mecânica; MVP vs estendida; sem financeiro/fiscal |
+| Integrante 2 _(nome)_ | Entidades MVP | Usuario, Cliente, Peca — atributos e UKs |
+| Integrante 3 _(nome)_ | Modelo estendido | Veiculo, OS, serviços, associativas N:N |
+| Integrante 4 _(nome)_ | Cardinalidades + lógico | 1:N `(1,N)`—`(1,1)`; N:N; [MODELO-LOGICO.md](MODELO-LOGICO.md) |
+| Integrante 5 _(nome)_ | Justificativas + físico | [JUSTIFICATIVAS.md](JUSTIFICATIVAS.md); scripts MySQL; 8 FKs |
+| Integrante 6 _(nome)_ | Demonstração | Estoque crítico; OS com JOINs; queries analíticas |
 
-> Preencher os nomes dos integrantes antes da apresentação.
+> Preencher nomes e RA em [ENTREGA.md](ENTREGA.md) antes da entrega (18/06).
 
 ---
 

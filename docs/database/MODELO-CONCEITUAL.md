@@ -354,5 +354,8 @@ Financeiro, fiscal, agenda, operação offline, integrações externas — não 
 - [SRS](../project/SRS.md)
 - [USE_CASES](../project/USE_CASES.md)
 - [METRICS](../project/METRICS.md)
+- [Modelo lógico](MODELO-LOGICO.md)
+- [Justificativas](JUSTIFICATIVAS.md)
+- [Entrega (índice)](ENTREGA.md)
 - [Modelo físico MySQL](../../database/mysql/) — scripts `schema_mvp.sql` e `schema_extended.sql`
 - [Checklist de apresentação](CHECKLIST-APRESENTACAO.md)
