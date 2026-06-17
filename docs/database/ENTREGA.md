@@ -11,14 +11,10 @@
 
 | # | Nome | RA |
 |---|------|-----|
-| 1 | _(preencher)_ | _(preencher)_ |
-| 2 | _(preencher)_ | _(preencher)_ |
-| 3 | _(preencher)_ | _(preencher)_ |
-| 4 | _(preencher)_ | _(preencher)_ |
-| 5 | _(preencher)_ | _(preencher)_ |
-| 6 | _(preencher)_ | _(preencher)_ |
-
-> Máximo 6 integrantes. Preencher antes da entrega formal.
+| 1 | Gustavo Vieira | _(preencher)_ |
+| 2 | Philipe Gonçalves | _(preencher)_ |
+| 3 | Jenifer Gomes | _(preencher)_ |
+| 4 | Luís Gabriel | _(preencher)_ |
 
 ---
 

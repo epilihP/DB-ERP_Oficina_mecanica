@@ -175,14 +175,10 @@ Use esta seção na apresentação — cada integrante cobre um tópico (preench
 
 | Integrante | Tópico | Pontos-chave |
 |------------|--------|--------------|
-| Integrante 1 _(nome)_ | Problema e escopo | Oficina mecânica; MVP vs estendida; sem financeiro/fiscal |
-| Integrante 2 _(nome)_ | Entidades MVP | Usuario, Cliente, Peca — atributos e UKs |
-| Integrante 3 _(nome)_ | Modelo estendido | Veiculo, OS, serviços, associativas N:N |
-| Integrante 4 _(nome)_ | Cardinalidades + lógico | 1:N `(1,N)`—`(1,1)`; N:N; [MODELO-LOGICO.md](MODELO-LOGICO.md) |
-| Integrante 5 _(nome)_ | Justificativas + físico | [JUSTIFICATIVAS.md](JUSTIFICATIVAS.md); scripts MySQL; 8 FKs |
-| Integrante 6 _(nome)_ | Demonstração | Estoque crítico; OS com JOINs; queries analíticas |
-
-> Preencher nomes e RA em [ENTREGA.md](ENTREGA.md) antes da entrega (18/06).
+| Gustavo Vieira | Problema e escopo | Oficina mecânica; MVP vs estendida; sem financeiro/fiscal |
+| Philipe Gonçalves | Modelo conceitual | Entidades MVP; estendido; cardinalidades 1:N e N:N |
+| Jenifer Gomes | Modelo lógico e justificativas | [MODELO-LOGICO.md](MODELO-LOGICO.md); PKs/FKs; [JUSTIFICATIVAS.md](JUSTIFICATIVAS.md) |
+| Luís Gabriel | Modelo físico e demonstração | Scripts MySQL; 8 FKs; estoque crítico; OS com JOINs |
 
 ---
 
