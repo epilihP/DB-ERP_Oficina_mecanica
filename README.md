@@ -67,6 +67,8 @@ O sistema é deliberadamente simples: não há módulos financeiros, ordens de s
 
 ## Modelo de Dados
 
+Modelo conceitual (DER): [`docs/database/MODELO-CONCEITUAL.md`](docs/database/MODELO-CONCEITUAL.md).
+
 ```
 ┌────────────────────┐
 │      Usuario       │
@@ -77,6 +79,7 @@ O sistema é deliberadamente simples: não há módulos financeiros, ordens de s
 │ senhaHash          │
 │ perfil             │  → GERENTE | FUNCIONARIO
 │ createdAt          │
+│ updatedAt          │
 └────────────────────┘
 
 ┌────────────────────┐
@@ -217,6 +220,19 @@ prisma/
 ---
 
 ## Documentação
+
+### Modelagem de banco de dados (entrega da disciplina)
+
+| Documento | Localização |
+|-----------|-------------|
+| **Índice de entrega** | [`docs/database/ENTREGA.md`](docs/database/ENTREGA.md) |
+| Modelo conceitual | [`docs/database/MODELO-CONCEITUAL.md`](docs/database/MODELO-CONCEITUAL.md) |
+| Modelo lógico | [`docs/database/MODELO-LOGICO.md`](docs/database/MODELO-LOGICO.md) |
+| Justificativas | [`docs/database/JUSTIFICATIVAS.md`](docs/database/JUSTIFICATIVAS.md) |
+| Checklist / apresentação | [`docs/database/CHECKLIST-APRESENTACAO.md`](docs/database/CHECKLIST-APRESENTACAO.md) |
+| Scripts MySQL (físico) | [`database/mysql/`](database/mysql/) |
+
+### Projeto integrador
 
 | Documento | Localização |
 |-----------|-------------|
