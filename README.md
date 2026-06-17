@@ -67,6 +67,8 @@ O sistema é deliberadamente simples: não há módulos financeiros, ordens de s
 
 ## Modelo de Dados
 
+Modelo conceitual (DER): [`docs/database/MODELO-CONCEITUAL.md`](docs/database/MODELO-CONCEITUAL.md).
+
 ```
 ┌────────────────────┐
 │      Usuario       │
@@ -77,6 +79,7 @@ O sistema é deliberadamente simples: não há módulos financeiros, ordens de s
 │ senhaHash          │
 │ perfil             │  → GERENTE | FUNCIONARIO
 │ createdAt          │
+│ updatedAt          │
 └────────────────────┘
 
 ┌────────────────────┐
