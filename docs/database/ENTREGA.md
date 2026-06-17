@@ -11,10 +11,10 @@
 
 | # | Nome | RA |
 |---|------|-----|
-| 1 | Gustavo Vieira | _(preencher)_ |
-| 2 | Philipe Gonçalves | _(preencher)_ |
-| 3 | Jenifer Gomes | _(preencher)_ |
-| 4 | Luís Gabriel | _(preencher)_ |
+| 1 | Gustavo Vieira | 072960 |
+| 2 | Philipe Gonçalves | 073085 |
+| 3 | Jenifer Gomes | 207463 |
+| 4 | Luís Gabriel | 209673 |
 
 ---
 
